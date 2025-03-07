@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MenajemenPetugas;
+// use App\Models\MenajemenPetugas;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MenajemenPetugasController extends Controller
 {
@@ -14,17 +16,24 @@ class MenajemenPetugasController extends Controller
 
     public function lihat()
     {
-        $petugas = MenajemenPetugas::all();
+        $petugas = User::where('role', 'admin')->get();
         return view('Petugas.Datapetugas', compact('petugas'));
     }
+
     public function input(Request $request)
     {
-        $petugas = new MenajemenPetugas();
-        $petugas->nama = $request->input('nama');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:menajemen_petugas,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $petugas = new User();
+        $petugas->name = $request->input('name');
         $petugas->email = $request->input('email');
-        $petugas->password = $request->input('password');
-        $petugas->tanggal = $request->input('tanggal');
-        $petugas->jenis_kelamin = $request->input('jenis_kelamin');
+        $petugas->password = Hash::make($request->input('password'));
+        $petugas->role = 'admin';
+        // 🔥 Hashing password sebelum disimpan
 
         $petugas->save();
 
@@ -33,7 +42,7 @@ class MenajemenPetugasController extends Controller
 
     public function delete($id)
     {
-        $petugas = MenajemenPetugas::findOrFail($id);
+        $petugas = User::findOrFail($id);
         $petugas->delete();
         return redirect()->route('petugas.lihat')->with('success', 'Data Petugas berhasil dihapus.');
     }

@@ -14,8 +14,6 @@ class MenajemenPetugas extends Model
         'nama',
         'email',
         'password',
-        'tanggal',
-        'jenis_kelamin',
     ];
 
     protected $hidden = [

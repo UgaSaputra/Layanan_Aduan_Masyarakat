@@ -2,7 +2,7 @@
 
 @section('contents')
     <div class="container mt-4">
-        <h2 class="text-center mb-4">Daftar Petugas</h2>
+        <h2 class="text-center mb-4">Daftar Data Admin</h2>
         @if (session('success'))
             <div class="alert alert-success text-center">
                 {{ session('success') }}
@@ -16,8 +16,7 @@
                         <th>ID</th>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Tanggal</th>
-                        <th>Jenis Kelamin</th>
+                        <th>Password</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -25,18 +24,22 @@
                     @foreach($petugas as $index => $petugasItem)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $petugasItem->nama }}</td>
+                            <td>{{ $petugasItem->name }}</td>
                             <td>{{ $petugasItem->email }}</td>
-                            <td>{{ \Carbon\Carbon::parse($petugasItem->tanggal)->format('d-m-Y') }}</td>
-                            <td>{{ ucfirst($petugasItem->jenis_kelamin) }}</td>
                             <td>
-                                <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="{{ route('petugas.delete', $petugasItem->id) }}"
-                                       class="btn btn-danger"
-                                       onclick="return confirm('Yakin ingin menghapus data petugas ini?')">
-                                        Hapus
-                                    </a>
-                                </td>
+                                <span class="password-hidden">********</span>
+                                <span class="password-text d-none">{{ $petugasItem->password }}</span>
+                                <button type="button" class="btn btn-sm btn-secondary toggle-password">
+                                    👁
+                                </button>
+                            </td>
+                            <td>
+                                <a href="{{ route('petugas.delete', $petugasItem->id) }}"
+                                   class="btn btn-danger"
+                                   onclick="return confirm('Yakin ingin menghapus data petugas ini?')">
+                                    Hapus
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -75,4 +78,24 @@
             text-align: center;
         }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".toggle-password").forEach(button => {
+                button.addEventListener("click", function () {
+                    let row = this.closest("td");
+                    let hiddenPassword = row.querySelector(".password-hidden");
+                    let textPassword = row.querySelector(".password-text");
+
+                    if (textPassword.classList.contains("d-none")) {
+                        textPassword.classList.remove("d-none");
+                        hiddenPassword.classList.add("d-none");
+                    } else {
+                        textPassword.classList.add("d-none");
+                        hiddenPassword.classList.remove("d-none");
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

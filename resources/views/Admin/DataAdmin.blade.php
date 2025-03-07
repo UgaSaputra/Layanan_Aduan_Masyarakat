@@ -2,7 +2,7 @@
 
 @section('contents')
     <div class="container mt-4">
-        <h2 class="text-center mb-4">Daftar Admin</h2>
+        <h2 class="text-center mb-4">Daftar Petugas</h2>
         @if (session('success'))
             <div class="alert alert-success text-center">
                 {{ session('success') }}
@@ -16,8 +16,6 @@
                         <th>ID</th>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Tanggal</th>
-                        <th>Jenis Kelamin</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -25,12 +23,9 @@
                     @foreach($admin as $index => $adminItem)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $adminItem->nama }}</td>
+                            <td>{{ $adminItem->name }}</td>
                             <td>{{ $adminItem->email }}</td>
-                            <td>{{ \Carbon\Carbon::parse($adminItem->tanggal)->format('d-m-Y') }}</td>
-                            <td>{{ ucfirst($adminItem->jenis_kelamin) }}</td>
                             <td>
-                                <a href="#" class="btn btn-warning btn-sm">Edit</a>
                                     <a href="{{ route('admin.delete', $adminItem->id) }}"
                                        class="btn btn-danger"
                                        onclick="return confirm('Yakin ingin menghapus data admin ini?')">
@@ -40,12 +35,12 @@
                         </tr>
                     @endforeach
                 </tbody>
-                <div class="export-buttons">
+                {{-- <div class="export-buttons">
                     <form action="{{ route('export.pdf') }}" method="POST">
                         @csrf
                         <button type="submit" class="export-btn">Ekspor ke PDF</button>
                     </form>
-                </div>
+                </div> --}}
 
             </table>
         </div>

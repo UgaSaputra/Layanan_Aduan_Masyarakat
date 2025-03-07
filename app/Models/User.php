@@ -42,4 +42,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Check if the user is a regular user.
+     */
+    // public function isUser()
+    // {
+    //     return $this->role === 'user';
+    // }
+
+    // /**
+    //  * Check if the user is a 'petugas'.
+    //  */
+    // public function isPetugas()
+    // {
+    //     return $this->role === 'petugas';
+    // }
 }

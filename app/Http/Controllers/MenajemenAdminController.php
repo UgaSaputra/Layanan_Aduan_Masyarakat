@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\MenajemenAdmin;
+// use App\Models\MenajemenAdmin;
+use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MenajemenAdminController extends Controller
 {
@@ -12,18 +14,17 @@ class MenajemenAdminController extends Controller
     }
 
     public function data() {
-        $admin = MenajemenAdmin::all();
+        $admin = User::where('role', 'petugas')->get();
         return view('Admin.DataAdmin', compact('admin'));
     }
 
     public function tambah(Request $request)
     {
-        $admin = new MenajemenAdmin();
-        $admin->nama = $request->input('nama');
+        $admin = new User();
+        $admin->name = $request->input('name');
         $admin->email = $request->input('email');
-        $admin->password = $request->input('password');
-        $admin->tanggal = $request->input('tanggal');
-        $admin->jenis_kelamin = $request->input('jenis_kelamin');
+        $admin->password = Hash::make($request->input('password'));
+        $admin->role = 'petugas';
 
         $admin->save();
 
@@ -32,7 +33,7 @@ class MenajemenAdminController extends Controller
 
     public function delete($id)
     {
-        $admin = MenajemenAdmin::findOrFail($id);
+        $admin = User::findOrFail($id);
         $admin->delete();
         return redirect()->route('admin.data')->with('success', 'Data Admin berhasil dihapus.');
     }

@@ -4,13 +4,20 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (auth()->user()->role !== $role) {
-            abort(403, 'Unauthorized');
+        if (!Auth::check()) {
+            abort(403, 'User tidak terautentikasi');
+        }
+
+        $userRole = Auth::user()->role; 
+
+        if (!in_array($userRole, $roles)) {
+            abort(403, "Unauthorized. Role Anda: $userRole. Diperlukan: " . implode(', ', $roles));
         }
 
         return $next($request);

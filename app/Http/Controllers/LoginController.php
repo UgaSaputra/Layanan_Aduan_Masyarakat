@@ -29,15 +29,17 @@ class LoginController extends Controller
         ];
 
         if (Auth::attempt($infologin)) {
-            return redirect()->route('dashboard.show')->with('success', 'Berhasil login!');
+            return redirect()->route('dashboard.show')->with('success', 'Login Success');
         } else {
-            return back()
-                ->withErrors(['username_password' => 'Username dan password yang dimasukkan tidak sesuai'])
-                ->withInput();
+            return response()->json([
+                'message' => 'Username dan password yang dimasukkan tidak sesuai'
+            ], 401);
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
+        Auth::logout();
         return redirect('');
     }
 }

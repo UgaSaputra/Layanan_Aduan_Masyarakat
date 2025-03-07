@@ -1,153 +1,84 @@
 @extends('layouts.app')
 
 @section('contents')
-    <title>Rekap Laporan</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <title>Laporan Berdasarkan Wilayah</title>
+    <link rel="stylesheet" href="{{ asset('style.css/rekap.css') }}">
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            color: #333;
-        }
 
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .title {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #4CAF50;
-        }
-
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .report-table th, .report-table td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        .report-table th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .report-table tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .export-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .export-btn:hover {
-            background-color: #45a049;
-        }
-
-        .export-buttons {
-            text-align: center;
-        }
-
-        .export-buttons button {
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 10px;
-            transition: background-color 0.3s;
-        }
-
-        .export-buttons button:hover {
-            background-color: #1976D2;
-        }
-    </style>
-</head>
-<body>
     <div class="container">
-        <h1 class="title">Rekap Laporan</h1>
+        <h1 class="title">Laporan Berdasarkan Wilayah</h1>
 
-        <!-- Tabel Laporan -->
+        <div class="filter-container">
+            <label for="kabupaten">Pilih Kabupaten di Jawa Tengah:</label>
+            <select id="kabupaten" name="kabupaten" onchange="filterKabupaten()">
+                <option value="" disabled selected >-- Pilih Kabupaten --</option>
+                <option value="Banjarnegara" {{ request('kabupaten') == 'Banjarnegara' ? 'selected' : '' }}>Banjarnegara</option>
+                <option value="Banyumas" {{ request('kabupaten') == 'Banyumas' ? 'selected' : '' }}>Banyumas</option>
+                <option value="Batang" {{ request('kabupaten') == 'Batang' ? 'selected' : '' }}>Batang</option>
+                <option value="Blora" {{ request('kabupaten') == 'Blora' ? 'selected' : '' }}>Blora</option>
+                <option value="Boyolali" {{ request('kabupaten') == 'Boyolali' ? 'selected' : '' }}>Boyolali</option>
+                <option value="Brebes" {{ request('kabupaten') == 'Brebes' ? 'selected' : '' }}>Brebes</option>
+                <option value="Cilacap" {{ request('kabupaten') == 'Cilacap' ? 'selected' : '' }}>Cilacap</option>
+                <option value="Demak" {{ request('kabupaten') == 'Demak' ? 'selected' : '' }}>Demak</option>
+                <option value="Grobogan" {{ request('kabupaten') == 'Grobogan' ? 'selected' : '' }}>Grobogan</option>
+                <option value="Jepara" {{ request('kabupaten') == 'Jepara' ? 'selected' : '' }}>Jepara</option>
+                <option value="Karanganyar" {{ request('kabupaten') == 'Karanganyar' ? 'selected' : '' }}>Karanganyar</option>
+                <option value="Kendal" {{ request('kabupaten') == 'Kendal' ? 'selected' : '' }}>Kendal</option>
+                <option value="Klaten" {{ request('kabupaten') == 'Klaten' ? 'selected' : '' }}>Klaten</option>
+                <option value="Kudus" {{ request('kabupaten') == 'Kudus' ? 'selected' : '' }}>Kudus</option>
+                <option value="Magelang" {{ request('kabupaten') == 'Magelang' ? 'selected' : '' }}>Magelang</option>
+                <option value="Pati" {{ request('kabupaten') == 'Pati' ? 'selected' : '' }}>Pati</option>
+                <option value="Pekalongan" {{ request('kabupaten') == 'Pekalongan' ? 'selected' : '' }}>Pekalongan</option>
+                <option value="Pemalang" {{ request('kabupaten') == 'Pemalang' ? 'selected' : '' }}>Pemalang</option>
+                <option value="Purbalingga" {{ request('kabupaten') == 'Purbalingga' ? 'selected' : '' }}>Purbalingga</option>
+                <option value="Purworejo" {{ request('kabupaten') == 'Purworejo' ? 'selected' : '' }}>Purworejo</option>
+                <option value="Rembang" {{ request('kabupaten') == 'Rembang' ? 'selected' : '' }}>Rembang</option>
+                <option value="Semarang" {{ request('kabupaten') == 'Semarang' ? 'selected' : '' }}>Semarang</option>
+                <option value="Sragen" {{ request('kabupaten') == 'Sragen' ? 'selected' : '' }}>Sragen</option>
+                <option value="Sukoharjo" {{ request('kabupaten') == 'Sukoharjo' ? 'selected' : '' }}>Sukoharjo</option>
+                <option value="Tegal" {{ request('kabupaten') == 'Tegal' ? 'selected' : '' }}>Tegal</option>
+                <option value="Temanggung" {{ request('kabupaten') == 'Temanggung' ? 'selected' : '' }}>Temanggung</option>
+                <option value="Wonogiri" {{ request('kabupaten') == 'Wonogiri' ? 'selected' : '' }}>Wonogiri</option>
+                <option value="Wonosobo" {{ request('kabupaten') == 'Wonosobo' ? 'selected' : '' }}>Wonosobo</option>
+            </select>
+        </div>
+
+
+
         <table class="report-table">
             <thead>
                 <tr>
                     <th>ID Laporan</th>
-                    <th>Nama Karyawan</th>
-                    <th>Tanggal</th>
+                    <th>Jenis Laporan</th>
+                    <th>Kabupaten</th>
                     <th>Status</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>01</td>
-                    <td>John Doe</td>
-                    <td>02-07-2025</td>
-                    <td>Aktif</td>
-                    <td>
-                        <div class="export-buttons">
-                            <form action="#" method="POST">
-                                @csrf
-                                <button type="submit" class="export-btn">Ekspor ke Excel</button>
-                                <form action="#" method="POST">
-                                    @csrf
-                                    <button type="submit" class="export-btn">Ekspor ke PDF</button>
-                                </form>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>02</td>
-                    <td>Jane Smith</td>
-                    <td>22-06-2025</td>
-                    <td>Berhenti</td>
-                    <td>
-                        <div class="export-buttons">
-                            <form action="#" method="POST">
-                                @csrf
-                                <button type="submit" class="export-btn">Ekspor ke Excel</button>
-                                <form action="#" method="POST">
-                                    @csrf
-                                    <button type="submit" class="export-btn">Ekspor ke PDF</button>
-                                </form>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <!-- Tambah baris sesuai dengan data -->
+                @forelse ($laporan as $item)
+                    <tr>
+                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->jenis_laporan }}</td>
+                        <td>{{ ucfirst($item->kabupaten) }}</td>
+                        <td>{{ ucfirst($item->status) }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4">Tidak ada data laporan.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
 
-        <!-- Tombol Ekspor Laporan -->
-        <div class="export-buttons">
-            <button class="export-btn">Ekspor Semua ke Excel</button>
-            <button class="export-btn">Ekspor Semua ke PDF</button>
+        <div class="pagination">
+            {{ $laporan->appends(['kabupaten' => request('kabupaten')])->links() }}
         </div>
     </div>
+
+    <script>
+        function filterKabupaten() {
+            var kabupaten = document.getElementById('kabupaten').value;
+            window.location.href = '?kabupaten=' + kabupaten;
+        }
+    </script>
 @endsection
